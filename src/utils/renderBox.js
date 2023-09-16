@@ -10,10 +10,11 @@ export const renderBoxes = (canvasRef, res, rawImage) => {
 
   ctx.drawImage(rawImage, 0, 0, canvas.width, canvas.height);
 
-  //Skipping the class 0: background
   for (let classIdx = 1; classIdx < numClasses; classIdx++) {
     const classColor = generateClassColors(numClasses)[classIdx];
     ctx.fillStyle = classColor;
+
+    const coordinates = []; // Collect mask coordinates for this class
 
     for (let row = 0; row < numRows; row++) {
       for (let col = 0; col < numCols; col++) {
@@ -22,12 +23,21 @@ export const renderBoxes = (canvasRef, res, rawImage) => {
         if (maskValue > 0) {
           const x = col * cellWidth;
           const y = row * cellHeight;
+          const width = cellWidth;
+          const height = cellHeight;
 
-          ctx.globalAlpha = 0.5;
-          ctx.fillRect(x, y, cellWidth, cellHeight);
-          ctx.globalAlpha = 1.0;
+          coordinates.push({ x, y, width, height });
         }
       }
+    }
+
+    // Batch render mask rectangles for this class
+    if (coordinates.length > 0) {
+      ctx.globalAlpha = 0.5;
+      for (const { x, y, width, height } of coordinates) {
+        ctx.fillRect(x, y, width, height);
+      }
+      ctx.globalAlpha = 1.0;
     }
   }
 };

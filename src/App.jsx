@@ -56,7 +56,7 @@ const App = () => {
       "Bag",
       "Scarf",
     ];
-  
+
     const colors = generateClassColors(labels.length);
 
   /**
@@ -69,10 +69,10 @@ const App = () => {
     tf.engine().startScope();
     const input = tf.tidy(() => {
       const img = tf.image
-                  .resizeBilinear(tf.browser.fromPixels(videoRef.current), model_dim)
-                  .div(255.0)
-                  .expandDims(0);
-      return img
+        .resizeBilinear(tf.browser.fromPixels(videoRef.current), model_dim)
+        .div(255.0)
+        .expandDims(0);
+      return img;
     });
 
     await model.executeAsync(input).then((res) => {
@@ -89,9 +89,6 @@ const App = () => {
 
       // Overlay the segmentation masks on top of the raw image with transparency
       renderBoxes(canvasRef, res, rawImage);
-      // Draw a semi-transparent red rectangle on top of the raw image
-      // ctx.fillStyle = 'rgba(255, 0, 0, 0.5)'; // Red with 50% opacity
-      // ctx.fillRect(0, 0, canvas.width, canvas.height);
       tf.dispose(res);
     });
 
