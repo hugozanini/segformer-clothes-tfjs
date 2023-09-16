@@ -61,7 +61,7 @@ const App = () => {
 
   /**
    * Function to detect every frame loaded from webcam in video tag.
-   * @param {tf.GraphModel} model loaded YOLOv7 tensorflow.js model
+   * @param {tf.GraphModel} model loaded tensorflow.js model
    */
 
   const detectFrame = async (model) => {
@@ -104,15 +104,15 @@ const App = () => {
       onProgress: (fractions) => {
         setLoading({ loading: true, progress: fractions });
       },
-    }).then(async (yolov7) => {
+    }).then(async (segformer) => {
       // Warmup the model before using real data.
-      const dummyInput = tf.ones(yolov7.inputs[0].shape);
-      await yolov7.executeAsync(dummyInput).then((warmupResult) => {
+      const dummyInput = tf.ones(segformer.inputs[0].shape);
+      await segformer.executeAsync(dummyInput).then((warmupResult) => {
         tf.dispose(warmupResult);
         tf.dispose(dummyInput);
 
         setLoading({ loading: false, progress: 1 });
-        webcam.open(videoRef, () => detectFrame(yolov7));
+        webcam.open(videoRef, () => detectFrame(segformer));
       });
     });
   }, []);
@@ -120,7 +120,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <h2>Object Detection Using YOLOv7 & Tensorflow.js</h2>
+      <h2>Segformer for Clothes Segmentation with TensorFlow.js</h2>
       {loading.loading ? (
         <Loader>Loading model... {(loading.progress * 100).toFixed(2)}%</Loader>
       ) : (

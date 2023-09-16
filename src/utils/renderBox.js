@@ -1,5 +1,3 @@
-import labels from "./labels.json";
-
 export const renderBoxes = (canvasRef, res, rawImage) => {
   const canvas = canvasRef.current;
   const ctx = canvas.getContext('2d');
