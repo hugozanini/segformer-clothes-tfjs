@@ -7,11 +7,6 @@ import { renderBoxes } from "./utils/renderBox";
 
 import "./style/App.css";
 
-/**
- * Function to detect image.
- * @param {HTMLCanvasElement} canvasRef canvas reference
- */
-
 const generateClassColors = (numClasses) => {
   const colors = [];
   const hueStep = 360 / numClasses;
@@ -25,7 +20,6 @@ const generateClassColors = (numClasses) => {
   return colors;
 };
 
-
 const App = () => {
   const [loading, setLoading] = useState({ loading: true, progress: 0 });
   const videoRef = useRef(null);
@@ -33,36 +27,30 @@ const App = () => {
   const webcam = new Webcam();
   // configs
   const modelName = "clothes_model";
-  const threshold = 0.80;
 
-    // Define labels and colors
-    const labels = [
-      "Background",
-      "Hat",
-      "Hair",
-      "Sunglasses",
-      "Upper-clothes",
-      "Skirt",
-      "Pants",
-      "Dress",
-      "Belt",
-      "Left-shoe",
-      "Right-shoe",
-      "Face",
-      "Left-leg",
-      "Right-leg",
-      "Left-arm",
-      "Right-arm",
-      "Bag",
-      "Scarf",
-    ];
+  // Define labels and colors
+  const labels = [
+    "Background",
+    "Hat",
+    "Hair",
+    "Sunglasses",
+    "Upper-clothes",
+    "Skirt",
+    "Pants",
+    "Dress",
+    "Belt",
+    "Left-shoe",
+    "Right-shoe",
+    "Face",
+    "Left-leg",
+    "Right-leg",
+    "Left-arm",
+    "Right-arm",
+    "Bag",
+    "Scarf",
+  ];
 
-    const colors = generateClassColors(labels.length);
-
-  /**
-   * Function to detect every frame loaded from webcam in video tag.
-   * @param {tf.GraphModel} model loaded tensorflow.js model
-   */
+  const colors = generateClassColors(labels.length);
 
   const detectFrame = async (model) => {
     const model_dim = [512, 512];
@@ -76,23 +64,19 @@ const App = () => {
     });
 
     await model.executeAsync(input).then((res) => {
-
       res = res.arraySync()[0];
 
-      // Capture the raw webcam frame
       const rawImage = videoRef.current;
 
-      // Render the raw image on the canvas
       const canvas = canvasRef.current;
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Overlay the segmentation masks on top of the raw image with transparency
       renderBoxes(canvasRef, res, rawImage);
       tf.dispose(res);
     });
 
-    requestAnimationFrame(() => detectFrame(model)); // get another frame
+    requestAnimationFrame(() => detectFrame(model));
     tf.engine().endScope();
   };
 
@@ -102,7 +86,6 @@ const App = () => {
         setLoading({ loading: true, progress: fractions });
       },
     }).then(async (segformer) => {
-      // Warmup the model before using real data.
       const dummyInput = tf.ones(segformer.inputs[0].shape);
       await segformer.executeAsync(dummyInput).then((warmupResult) => {
         tf.dispose(warmupResult);
@@ -117,17 +100,28 @@ const App = () => {
 
   return (
     <div className="App">
-      <h2>Segformer for Clothes Segmentation with TensorFlow.js</h2>
-      {loading.loading ? (
-        <Loader>Loading model... {(loading.progress * 100).toFixed(2)}%</Loader>
-      ) : (
-        <p> </p>
-      )}
-
+      <div className="title">
+        <h2>Segformer for Clothes Segmentation with TensorFlow.js</h2>
+        {loading.loading ? (
+          <Loader>Loading model... {(loading.progress * 100).toFixed(2)}%</Loader>
+        ) : (
+          <p> </p>
+        )}
+      </div>
       <div className="content">
-        <video autoPlay playsInline muted ref={videoRef} id="frame"
-        />
+        <video autoPlay playsInline muted ref={videoRef} id="frame" />
         <canvas width={640} height={640} ref={canvasRef} />
+      </div>
+      <div className="legend">
+        {labels.map((label, index) => (
+          <div
+            key={label}
+            className="legend-item"
+            style={{ backgroundColor: colors[index] }}
+          >
+            {label}
+          </div>
+        ))}
       </div>
     </div>
   );

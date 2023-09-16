@@ -2,7 +2,6 @@
   height: 100vh;
   padding: 0 10px;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -27,8 +26,24 @@
   height: 100%;
 }
 
-h2,
-p {
-  margin-bottom: 5px;
+
+.legend {
+  display: flex;
+  flex-direction: column;
 }
 
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px; /* Adjust this for spacing between legend items */
+}
+
+.legend-item div {
+  width: 20px; /* Adjust this for the color box size */
+  height: 20px; /* Adjust this for the color box size */
+  margin-right: 8px; /* Adjust this for spacing between color box and label */
+}
+
+.legend-item span {
+  white-space: nowrap;
+}
