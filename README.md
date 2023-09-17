@@ -11,20 +11,13 @@ SegFormer is a simple, efficient yet powerful semantic segmentation framework wh
 The model recognizes 17 [different classes](https://github.com/hugozanini/segformer-clothes-tfjs/blob/40ae6842ffc404df3b059ecc36e3c420fe327ebf/src/App.jsx#L32) and just need a webpage to run.
 
 
-<!-- <body> 
+<body>
 <img  alt="Qries"
-src="https://github.com/hugozanini/yolov7-tfjs/blob/master/git-media/yolov7-tfjs-optimized.gif?raw=true"  width="400">
+src="https://github.com/hugozanini/segformer-clothes-tfjs/blob/main/git-media/segformer-demo.gif?raw=true"  width="400">
 </body
-
-
-
-<body> <a href="https://codesandbox.io/p/github/hugozanini/yolov7-tfjs/master?file=%2FREADME.md">
-<img  alt="Qries"
-src="https://raw.githubusercontent.com/hugozanini/realtime-sku-detection/main/git-media/sandbox.png"  height="100">
 </a>
 </body
-<br> -->
-
+<br>
 
 
 
