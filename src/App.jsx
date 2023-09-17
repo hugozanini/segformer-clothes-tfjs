@@ -16,6 +16,7 @@ const generateClassColors = (numClasses) => {
     const color = `hsl(${hue}, 100%, 50%)`;
     colors.push(color);
   }
+  colors[0] = `hsl(0%, 0%, 0%)`; //setting the background as None
 
   return colors;
 };
@@ -100,14 +101,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <div className="title">
-        <h2>Segformer for Clothes Segmentation with TensorFlow.js</h2>
-        {loading.loading ? (
-          <Loader>Loading model... {(loading.progress * 100).toFixed(2)}%</Loader>
-        ) : (
-          <p> </p>
-        )}
-      </div>
+      <h2 className="title">Segformer for Clothes Segmentation with TensorFlow.js</h2>
       <div className="content">
         <video autoPlay playsInline muted ref={videoRef} id="frame" />
         <canvas width={640} height={640} ref={canvasRef} />
@@ -117,7 +111,7 @@ const App = () => {
           <div
             key={label}
             className="legend-item"
-            style={{ backgroundColor: colors[index] }}
+            style={{ backgroundColor: colors[index]}}
           >
             {label}
           </div>

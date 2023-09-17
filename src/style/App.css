@@ -6,6 +6,13 @@
   align-items: center;
 }
 
+.title {
+  text-align: center; /* Center-align the title */
+  position: absolute;
+  top: 0; /* Position the title at the top */
+  padding-top: 30px;
+}
+
 .App > .content {
   margin-top: 5px;
   position: relative;
